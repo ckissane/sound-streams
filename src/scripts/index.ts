@@ -89,7 +89,7 @@ regl.frame(({viewportWidth,viewportHeight}) => {
         const mus = getMusic();
         // if (window.scrollY < window.innerHeight / 2) drawLogo(1.0 - config.DENSITY_DISSIPATION);
         // if (pointer.moved) {
-            //createSplat(pointer.x, pointer.y, Math.min(Math.max(pointer.dx/100,-1),1), Math.min(Math.max(pointer.dy/100,-1),1), pointer.color, config.SPLAT_RADIUS);
+            // createSplat(pointer.x, pointer.y, Math.min(Math.max(pointer.dx/100,-1),1), Math.min(Math.max(pointer.dy/100,-1),1), pointer.color, config.SPLAT_RADIUS);
            
         for (let i = 0; i < mus.length; i+=1) {
             createSplat((i+4+0.5)/(mus.length+8)*viewportWidth, 0.9*viewportHeight, 0, -mus[i], hslToRgb(i/(mus.length+1),1,0.5), 1/(mus.length+1)/2);
