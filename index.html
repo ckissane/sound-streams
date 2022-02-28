@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Sound Streams</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="./src/main.css">
+		<style type="text/css">
+			body {
+				background: rgb(0, 0, 0);
+			  overflow:hidden;
+			}
+	
+			body,
+			html {
+				margin: 0px;
+				padding: 0px;
+			}
+	
+			circle {
+				stroke: white;
+				stroke-opacity: 0.25;
+				stroke-width: 2px;
+			}
+		  #audio {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			opacity: 0.0;
+			transition: opacity 1s;
+		  }
+		  #audio:hover {
+			opacity: 0.8;
+		  }
+		  #audio.paused {
+			opacity: 0.8;
+		  }
+		  #overlay {
+			color: white;
+			position: absolute;
+			top: 0;
+			left: 0;
+		  }
+		  a {
+			color: white;
+			font-family: Arial;
+		  }
+	/*       canvas{
+				filter: sepia(0.8) hue-rotate(180deg) saturate(2);
+		  } */
+		</style>
+	</head>
+	<body>
+		<canvas id="c"></canvas>
+		<audio id="audio" crossorigin="anonymous" class="paused" src="https://cdn.glitch.com/7c659aa6-fe5f-4610-bdf3-3fd76117d9a5%2F300%20Violin%20Orchestra.mp3?1551626906037" loop controls></audio>
+  
+		<script type="module" src="./src/main.ts">
+
+		</script>
+    <style>
+      html,body,canvas{
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+      }
+      canvas{
+        touch-action: none;
+      }
+    </style>
+	</body>
+</html>
