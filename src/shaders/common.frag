@@ -226,8 +226,8 @@ float border(vec2 p)
     float rr=min(R.x,R.y)/sqrt(2.0);
     vec2 bc=(p-R*vec2(.5,.5));
     float a=iTime*0.5;
-    float bound=-sdBox(p-R*vec2(.5,.5),R*vec2(1.0,1.0));//-sdBox(vec2(cos(a)*bc.x-sin(a)*bc.y,cos(a)*bc.y+sin(a)*bc.x),rr*vec2(.5,.5));//max(-sdBox(p-R*vec2(.5,.2),R*vec2(.5,.2)),-sdBox(p-R*vec2(.5,.8),R*vec2(1.0,.6)));
-    return max(-sdBox(p-R*vec2(.5,.8),R*vec2(1.,.3)),bound);
+    float bound=-sdBox(p-R*vec2(.5,.5),R*vec2(0.499,.499));//-sdBox(vec2(cos(a)*bc.x-sin(a)*bc.y,cos(a)*bc.y+sin(a)*bc.x),rr*vec2(.5,.5));//max(-sdBox(p-R*vec2(.5,.2),R*vec2(.5,.2)),-sdBox(p-R*vec2(.5,.8),R*vec2(1.0,.6)));
+    return max(-sdBox(p-R*vec2(.5,.8),R*vec2(1.,.7)),bound);
     // float box=sdBox(Rot(0.*time)*(p-R*vec2(.5,.6)),R*vec2(.05,.01));
     // float drain=-sdBox(p-R*vec2(.5,.7),R*vec2(1.5,.5));
     // vec2 pg=p-R*vec2(.5,.5);

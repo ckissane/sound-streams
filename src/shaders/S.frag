@@ -23,7 +23,7 @@ void main()
     
     if(length(P.X - R*(splatCenter)) <= R.x*radius) 
     {
-        P.M=0.0;
+        //P.M=0.0;
         float m=P.M;
     P.X*=m;
     P.V*=m;
@@ -36,6 +36,7 @@ void main()
         P.V = (P.V+am*splatV)/tm;
         P.M += am;
         P.C += splatM*am/tm;
+        P.V=splatV;
     }
 
     // if(length(P.X - R*vec2(0.2, 0.1)) < 8.) 

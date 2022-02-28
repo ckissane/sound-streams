@@ -211,7 +211,7 @@ export const display = ()=>{
     
     return displayU({iFrame,iTime,iMouse});//FIXME:!
 };
-let fT = 1;
+let fT = 1/8;
 let fTC = 30;
 let inRun = false;
 export const update = (config) => {

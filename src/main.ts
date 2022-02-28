@@ -37,7 +37,7 @@ var BoidBeat = function () {
 	this.calibrate = () => calibrationCountdown = 1000;
 	// Define render logic ...
 };
-var freqCount = 16;
+var freqCount = 32;
 function getRMS(spectrum) {
 	var rms = 0;
 	for (var i = 0; i < spectrum.length; i++) {
@@ -338,9 +338,9 @@ function render() {
 		let before=musicave[x[1]]
 		return [Math.max(0,(now-before+0.0001)/(now/2+before/2+0.0001))*256*2,x[1]]
 	});
-	// mO.sort((a,b)=>b[0]-a[0])
-	const lmusic=mO.slice(0,32).sort((a,b)=>a[1]-b[1]).map(x=>x[0]).concat(mO.slice(32).map(x=>x[0]));
-	mus = lmusic;
+	mO.sort((a,b)=>b[0]-a[0])
+	const lmusic=mO.slice(0,32).sort((a,b)=>a[1]-b[1]).map(x=>[music[x[1]]-musicave[x[1]],x[1]]).concat(mO.slice(32).map(x=>[music[x[1]]-musicave[x[1]],x[1]]));
+	mus = lmusic.map(x=>x[0]/64);
 	// positionUniforms["time"].value = now;
 	// positionUniforms["delta"].value = delta;
 	// velocityUniforms["time"].value = now;
