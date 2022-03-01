@@ -82,6 +82,10 @@ document.addEventListener("mousedown", () => {
 
 // rrrr();
 export const initSPH = (getMusic:()=>number[]) => {
+    let lastM:number[]=[];
+    let lastC:number[]=[];
+    let curCIM=-1;
+    let curCIMCD=new Date().getTime();
     window.addEventListener('load',()=>
 regl.frame(({viewportWidth,viewportHeight}) => {
     // const rrrr=()=>{
@@ -90,9 +94,33 @@ regl.frame(({viewportWidth,viewportHeight}) => {
         // if (window.scrollY < window.innerHeight / 2) drawLogo(1.0 - config.DENSITY_DISSIPATION);
         // if (pointer.moved) {
             // createSplat(pointer.x, pointer.y, Math.min(Math.max(pointer.dx/100,-1),1), Math.min(Math.max(pointer.dy/100,-1),1), pointer.color, config.SPLAT_RADIUS);
-           
-        for (let i = 0; i < mus.length; i+=1) {
-            createSplat((i+4+0.5)/(mus.length+8)*viewportWidth, 0.9*viewportHeight, 0, -mus[i], hslToRgb(i/(mus.length+1),1,0.5), 1/(mus.length+1)/2);
+           let minDim=Math.min(viewportWidth,viewportHeight);
+           let bars=mus.length;
+           if(curCIMCD<new Date().getTime()){
+            curCIM=-1;
+           }
+        for (let i = 0; i < bars; i+=1) {
+            lastC[i]=lastC[i]??0;
+            lastM[i]=lastM[i]??mus[i];
+            let angle=(i+0.5)/bars*Math.PI-Math.PI/2;
+            let speed=mus[i];
+            if(lastM[i]<0 && mus[i]>0){
+                if(curCIM<0){
+                    curCIMCD=new Date().getTime()+1000/32;
+                    curCIM=i;
+                    lastC[i]+=0.125;
+                }else{
+
+                    lastC[i]=lastC[curCIM];
+                }
+            }
+            lastM[i]=mus[i];
+            if(speed>0){
+            let rad=minDim/5;
+            let c=(lastC[i])%1;//i/(mus.length+1);
+            createSplat(Math.cos(angle)*rad+0.5*viewportWidth, Math.sin(angle)*rad+0.5*viewportHeight, Math.cos(angle)*speed,Math.sin(angle)*speed , hslToRgb(c,1,0.5), rad/(mus.length)/viewportWidth*3);
+            createSplat(-Math.cos(angle)*rad+0.5*viewportWidth, Math.sin(angle)*rad+0.5*viewportHeight, -Math.cos(angle)*speed,Math.sin(angle)*speed , hslToRgb(c,1,0.5), rad/(mus.length)/viewportWidth*3);
+            }
         }
             // pointer.moved = false;
         // }

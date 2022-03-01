@@ -201,7 +201,8 @@ const displayU=regl({
         MT: () => AMT.read,
         CT:()=>ACT.read,
         tar:regl.prop("tar"),
-        texelSize,
+        texelSize:({ viewportWidth, viewportHeight }) => [1 / (viewportWidth>>TEXTURE_DOWNSAMPLE), 1 / (viewportHeight>>TEXTURE_DOWNSAMPLE)],
+        screenTexelSize:texelSize
     },
     // viewport,
 });

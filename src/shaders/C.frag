@@ -23,7 +23,7 @@ void main()
 
         vec2 x0 = P0.X; //update position
         //how much mass falls into this pixel
-        rho += 1.*vec4(P.V, P.M,1.0)*G((pos - x0)/0.75); 
+        rho += 1.*vec4(P0.V, P0.M,1.0)*G((pos - x0)/0.75); 
     }
     U=rho;
     gl_FragColor=U;
