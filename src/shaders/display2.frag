@@ -94,7 +94,7 @@ vec3 mixN(vec3 a, vec3 b, float k)
 
 vec4 V(vec2 p)
 {
-    return getC(p);
+    //return getC(p);
     return pixel(ch1, p);
 }
 vec3 tanh3(vec3 g){

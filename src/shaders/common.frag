@@ -422,7 +422,7 @@ particle Simulation(in particle P,vec2 pos)
     
     //gravity
     vec2 d=normalize(P.X-R/2.0);
-    F+=-P.M*vec2(-d.y,d.x)*sign(d.x)*0.0005;
+    F+=-P.M*d*0.0005;//vec2(-d.y,d.x)*sign(d.x)*0.0005;
     
     // if(Mouse.z>0.)
     // {

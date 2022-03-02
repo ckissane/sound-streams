@@ -20,8 +20,11 @@ void main()
     // vec8 data = texelish(XT,VT,MT, pos); 
     
     particle P = getParticle( pos);
-    
-    if(length(P.X - R*(splatCenter)) <= R.x*radius) 
+    vec2 posc=P.X;
+    posc-=R*0.5;
+    //posc*=max((min(R.x,R.y)/5.0)/length(posc),1.0);
+    posc+=R*0.5;
+    if(length(posc - R*(splatCenter)) <= R.x*radius) 
     {
         P.M*=0.5;
         float m=P.M;
