@@ -18,15 +18,15 @@ function doubleFbo(filter) {
 
 function createFbo(filter) {
     let tex = regl.texture({
-        width: window.innerWidth >> CONSTANTS.TEXTURE_DOWNSAMPLE,
-        height: window.innerHeight >> CONSTANTS.TEXTURE_DOWNSAMPLE,
+        width: Math.ceil(window.innerWidth*(window.devicePixelRatio??1)/ CONSTANTS.TEXTURE_DOWNSAMPLE()),
+        height: Math.ceil(window.innerHeight*(window.devicePixelRatio??1) / CONSTANTS.TEXTURE_DOWNSAMPLE()),
         min: filter,
         mag: filter,
         type: "uint8",
         wrap:"clamp"
     });
     window.addEventListener("resize", () => {
-        tex.resize(window.innerWidth >> CONSTANTS.TEXTURE_DOWNSAMPLE, window.innerHeight >> CONSTANTS.TEXTURE_DOWNSAMPLE);
+        tex.resize(Math.ceil(window.innerWidth*(window.devicePixelRatio??1) / CONSTANTS.TEXTURE_DOWNSAMPLE()), Math.ceil(window.innerHeight*(window.devicePixelRatio??1) / CONSTANTS.TEXTURE_DOWNSAMPLE()));
     });
     return regl.framebuffer({
         color: tex,

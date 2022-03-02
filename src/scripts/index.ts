@@ -94,7 +94,7 @@ regl.frame(({viewportWidth,viewportHeight}) => {
         // if (window.scrollY < window.innerHeight / 2) drawLogo(1.0 - config.DENSITY_DISSIPATION);
         // if (pointer.moved) {
             createSplat(pointer.x, pointer.y, Math.min(Math.max(pointer.dx/100/2,-1),1), Math.min(Math.max(pointer.dy/100/2,-1),1), pointer.color, config.SPLAT_RADIUS);
-           let minDim=Math.min(viewportWidth,viewportHeight);
+           let minDim=Math.min(viewportWidth/(window.devicePixelRatio??1),viewportHeight/(window.devicePixelRatio??1));
            let bars=mus.length;
            if(curCIMCD<new Date().getTime()){
             curCIM=-1;
@@ -115,12 +115,14 @@ regl.frame(({viewportWidth,viewportHeight}) => {
                 }
             }
             lastM[i]=mus[i];
-            if(speed>0||speed<0||speed===0){
+            if(!(speed>0||speed<0||speed===0)){
+                speed=0;
+            }
             let rad=minDim/5;
             let c=(lastC[i])%1;//i/(mus.length+1);
-            createSplat(Math.cos(angle)*rad+0.5*viewportWidth, Math.sin(angle)*rad+0.5*viewportHeight, Math.cos(angle)*speed,Math.sin(angle)*speed , hslToRgb(c,1,0.5), rad/(mus.length)/viewportWidth*3);
-            createSplat(-Math.cos(angle)*rad+0.5*viewportWidth, Math.sin(angle)*rad+0.5*viewportHeight, -Math.cos(angle)*speed,Math.sin(angle)*speed , hslToRgb(c,1,0.5), rad/(mus.length)/viewportWidth*3);
-            }
+            createSplat(Math.cos(angle)*rad+0.5*viewportWidth/(window.devicePixelRatio??1), Math.sin(angle)*rad+0.5*viewportHeight/(window.devicePixelRatio??1), Math.cos(angle)*speed,Math.sin(angle)*speed , hslToRgb(c,1,0.5), rad/(mus.length)/viewportWidth*2*(window.devicePixelRatio??1));
+            createSplat(-Math.cos(angle)*rad+0.5*viewportWidth/(window.devicePixelRatio??1), Math.sin(angle)*rad+0.5*viewportHeight/(window.devicePixelRatio??1), -Math.cos(angle)*speed,Math.sin(angle)*speed , hslToRgb(c,1,0.5), rad/(mus.length)/viewportWidth*2*(window.devicePixelRatio??1));
+            
         }
             // pointer.moved = false;
         // }

@@ -15,7 +15,8 @@ var windowHalfY = window.innerHeight / 2;
 var BOUNDS = 800, BOUNDS_HALF = BOUNDS / 2;
 
 var last = performance.now();
-
+let tSize=256;
+export const getTSize=()=>tSize;
 var gpuCompute;
 var velocityVariable;
 var positionVariable;
@@ -340,7 +341,7 @@ function render() {
 	});
 	mO.sort((a,b)=>b[0]-a[0])
 	const lmusic=mO.slice(0,32).sort((a,b)=>a[1]-b[1]).map(x=>[music[x[1]]-musicave[x[1]],x[1]]).concat(mO.slice(32).map(x=>[music[x[1]]-musicave[x[1]],x[1]]));
-	mus = lmusic.map(x=>x[0]/64);
+	mus = lmusic.map(x=>x[0]/64).slice(0,16);
 	// positionUniforms["time"].value = now;
 	// positionUniforms["delta"].value = delta;
 	// velocityUniforms["time"].value = now;

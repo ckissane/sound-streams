@@ -418,7 +418,7 @@ particle Simulation(in particle P,vec2 pos)
     avgV.xy/=avgV.z;
     
     //viscosity
-    F+=0.1*P.M*(avgV.xy-P.V);
+    F+=0.0*P.M*(avgV.xy-P.V);
     
     //gravity
     vec2 d=normalize(P.X-R/2.0);
