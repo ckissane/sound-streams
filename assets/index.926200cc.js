@@ -430,7 +430,7 @@ particle Simulation(in particle P,vec2 pos)
     
     //gravity
     vec2 d=normalize(P.X-R/2.0);
-    F+=-P.M*vec2(-d.y,d.x)*sign(d.x)*0.0005;
+    F+=-P.M*d*0.0005;//vec2(-d.y,d.x)*sign(d.x)*0.0005;
     
     // if(Mouse.z>0.)
     // {
@@ -603,8 +603,11 @@ void main()
     // vec8 data = texelish(XT,VT,MT, pos); 
     
     particle P = getParticle( pos);
-    
-    if(length(P.X - R*(splatCenter)) <= R.x*radius) 
+    vec2 posc=P.X;
+    posc-=R*0.5;
+    //posc*=max((min(R.x,R.y)/5.0)/length(posc),1.0);
+    posc+=R*0.5;
+    if(length(posc - R*(splatCenter)) <= R.x*radius) 
     {
         P.M*=0.5;
         float m=P.M;
@@ -733,7 +736,7 @@ vec3 mixN(vec3 a, vec3 b, float k)
 
 vec4 V(vec2 p)
 {
-    return getC(p);
+    //return getC(p);
     return pixel(ch1, p);
 }
 vec3 tanh3(vec3 g){
