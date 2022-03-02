@@ -3,14 +3,6 @@ import { TEXTURE_DOWNSAMPLE } from "./constants";
 import { AXT_X,AVT_X,AMT,ACT,AXT_Y,AVT_Y,ATex,BTex,CTex } from "./fbos";
 
 import projectShader from "../shaders/project.vert?raw";
-import splatShader from "../shaders/splat.frag?raw";
-import logoShader from "../shaders/logo.frag?raw";
-import advectShader from "../shaders/advect.frag?raw";
-import divergenceShader from "../shaders/divergence.frag?raw";
-import clearShader from "../shaders/clear.frag?raw";
-import gradientSubtractShader from "../shaders/gradientSubtract.frag?raw";
-import jacobiShader from "../shaders/jacobi.frag?raw";
-import displayShader from "../shaders/display.frag?raw";
 import commonShader from "../shaders/common.frag?raw";
 import AShader from "../shaders/A.frag?raw";
 import BShader from "../shaders/B.frag?raw";
@@ -172,12 +164,7 @@ export function createSplat(x, y, dx, dy, color, radius) {
     // });
     // density.swap();
 }
-export function drawLogo(dissipation) {
-    // if (logo) {
-    //     logo({ dissipation });
-    //     density.swap();
-    // }
-}
+
 let iFrame=0;
 let iTime=0;
 let timeStarted=false;

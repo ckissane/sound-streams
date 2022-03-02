@@ -1,7 +1,7 @@
 // import "zenscroll";
 import { regl } from "./canvas";
 import * as config from "./constants";
-import { fullscreen, update, display, drawLogo, createSplat } from "./shaders";
+import { fullscreen, update, display, createSplat } from "./shaders";
 
 
 
@@ -93,7 +93,7 @@ regl.frame(({viewportWidth,viewportHeight}) => {
         const mus = getMusic();
         // if (window.scrollY < window.innerHeight / 2) drawLogo(1.0 - config.DENSITY_DISSIPATION);
         // if (pointer.moved) {
-            // createSplat(pointer.x, pointer.y, Math.min(Math.max(pointer.dx/100,-1),1), Math.min(Math.max(pointer.dy/100,-1),1), pointer.color, config.SPLAT_RADIUS);
+            createSplat(pointer.x, pointer.y, Math.min(Math.max(pointer.dx/100/2,-1),1), Math.min(Math.max(pointer.dy/100/2,-1),1), pointer.color, config.SPLAT_RADIUS);
            let minDim=Math.min(viewportWidth,viewportHeight);
            let bars=mus.length;
            if(curCIMCD<new Date().getTime()){
@@ -115,7 +115,7 @@ regl.frame(({viewportWidth,viewportHeight}) => {
                 }
             }
             lastM[i]=mus[i];
-            if(speed>0){
+            if(speed>0||speed<0||speed===0){
             let rad=minDim/5;
             let c=(lastC[i])%1;//i/(mus.length+1);
             createSplat(Math.cos(angle)*rad+0.5*viewportWidth, Math.sin(angle)*rad+0.5*viewportHeight, Math.cos(angle)*speed,Math.sin(angle)*speed , hslToRgb(c,1,0.5), rad/(mus.length)/viewportWidth*3);

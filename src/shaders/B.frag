@@ -43,7 +43,8 @@ void main()
     //     P.V = Dir(-PI*0.5 + 0.3*sin(0.3*time));
     //     P.M = mix(P.M, vec4(fluid_rho, 1.,0.9,0.0), 0.4);
     // }
-    P.M*=pow(0.997+min(dot(normalize(P.X-R/2.0),P.V),0.0)*0.005,dt);
+    float s=length(P.X-R*vec2(.5,.5))-min(R.x,R.y)/5.0<0.0?0.5:1.0;
+    P.M*=pow(1.0-0.003*s+min(dot(normalize(P.X-R/2.0),P.V),0.0)*0.005*s,dt);
     U = saveParticle(P, pos);
     gl_FragColor=U;
 }
