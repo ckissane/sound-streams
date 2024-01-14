@@ -110,9 +110,9 @@ function songchange(value) {
 function hashchange() {
 	let name=window.location.hash.slice(1);
 	if(name==="Push%20It%20to%20the%20Limit"){
-		audio.src="/01 Paul Engemann - Scarface (Push It to the Limit).mp3";
+		audio.src="./01 Paul Engemann - Scarface (Push It to the Limit).mp3";
 	}else if(name==="RhinestoneEyes"){
-		audio.src="/RhinestoneEyes.mp3";
+		audio.src="./RhinestoneEyes.mp3";
 	}else{
 		audio.src = "https://cdn.glitch.com/7c659aa6-fe5f-4610-bdf3-3fd76117d9a5%2F" + window.location.hash.slice(1) + ".mp3";
 	}
