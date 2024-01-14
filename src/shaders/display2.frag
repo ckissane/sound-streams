@@ -133,10 +133,10 @@ void main()
     vec3 col1 = P.C;//vec3(0.1, 0.4, 1.);
 	vec3 fcol =P.C;// mixN(col0, col1, tanh3(vec3(3.*(rho.w - 0.7))).x*0.5 + 0.5);
     // Output to screen
-    col = vec4(3.);
+    col = vec4(0.);
     col.xyz = mixN(col.xyz, fcol.xyz*(1.5*b + specular*5.), a);
     col.xyz = mixN(col.xyz, 0.*vec3(0.5,0.5,1.), bord);
-    col.xyz = tanh3(col.xyz);
+    //col.xyz = tanh3(col.xyz);
     col.w=1.0;
     //col.xyz=P.C*P.M;
     // col.xyz=vec3(P.V+0.5,0.0);
