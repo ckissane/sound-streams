@@ -15,8 +15,8 @@ var windowHalfY = window.innerHeight / 2;
 var BOUNDS = 800, BOUNDS_HALF = BOUNDS / 2;
 
 var last = performance.now();
-let tSize=256;
-export const getTSize=()=>tSize;
+let tSize = 256;
+export const getTSize = () => tSize;
 var gpuCompute;
 var velocityVariable;
 var positionVariable;
@@ -27,6 +27,10 @@ var colorUniforms;
 var birdUniforms;
 var micc = false;
 var calibrationCountdown = 1000;
+let publicSongs = {
+	"Deeply Disturbed": "8. Deeply Disturbed.mp3",
+	"Rhinestone Eyes": "RhinestoneEyes.mp3"
+};
 var BoidBeat = function () {
 	this.speed = 1;
 	this.directions = 6;
@@ -108,14 +112,15 @@ function songchange(value) {
 	window.location.hash = value.split("#").pop();
 }
 function hashchange() {
-	let name=window.location.hash.slice(1);
-	if(name==="Push%20It%20to%20the%20Limit"){
-		audio.src="./01 Paul Engemann - Scarface (Push It to the Limit).mp3";
-	}else if(name==="RhinestoneEyes"){
-		audio.src="./RhinestoneEyes.mp3";
-	}else{
-		audio.src = "https://cdn.glitch.com/7c659aa6-fe5f-4610-bdf3-3fd76117d9a5%2F" + window.location.hash.slice(1) + ".mp3";
-	}
+	let name = window.location.hash.slice(1);
+	if (publicSongs[decodeURIComponent(name)]) {
+		audio.src = publicSongs[decodeURIComponent(name)];
+	} else
+		if (name === "Push%20It%20to%20the%20Limit") {
+			audio.src = "./01 Paul Engemann - Scarface (Push It to the Limit).mp3";
+		} else {
+			audio.src = "https://cdn.glitch.com/7c659aa6-fe5f-4610-bdf3-3fd76117d9a5%2F" + window.location.hash.slice(1) + ".mp3";
+		}
 	audio.classList.add("paused");
 }
 var controls = new BoidBeat();
@@ -134,8 +139,8 @@ window.onload = function () {
 		"Flight": "/#Flight",
 		"Electroman Adventures V2": "/#Waterflame%20-%20Electroman%20Adventures%20V2",
 		"Rasputin": "/#Rasputin",
-		"Push It to the Limit":"Push%20It%20to%20the%20Limit",
-		"Rhinestone Eyes":"RhinestoneEyes"
+		"Push It to the Limit": "Push%20It%20to%20the%20Limit",
+		...Object.fromEntries(Object.keys(publicSongs).map(x => [x, x]))
 	}).onChange(songchange);
 	// gui.add(controls, 'speed', 0.125, 2);
 	// gui.add(controls, 'lineWidth', 1, 10);
@@ -182,7 +187,7 @@ for (var i = 0; i < freqCount; i++) {
 	musica.push(0);
 	musicmxl.push(0);
 }
-let musicave=musica.slice();
+let musicave = musica.slice();
 var musics = [];
 for (var i = 0; i < historyLength; i++) {
 	var music2 = new Uint8Array(freqCount);
@@ -222,13 +227,13 @@ function main() {
 		for (var j = 0; j < historyLength; j++) {
 			musicmxl[i] = Math.max(musics[j][i], musicmxl[i]);///historyLength;
 		}
-		musica[i] = musics[0][i]/musicmxl[i]*256;///historyLength;
+		musica[i] = musics[0][i] / musicmxl[i] * 256;///historyLength;
 		for (var j = 0; j < historyLength / hM; j++) {
-		
 
-			musicave[i] += musics[j][i] / historyLength * hM/musicmxl[i]*256;
+
+			musicave[i] += musics[j][i] / historyLength * hM / musicmxl[i] * 256;
 		}
-		
+
 	}
 
 }
@@ -312,7 +317,7 @@ function initComputeRenderer() {
 }
 
 function initBirds() {
-initSPH(getMus)
+	initSPH(getMus)
 
 }
 
@@ -341,16 +346,16 @@ function render() {
 
 	if (delta > 1) delta = 1; // safety cap on large deltas
 	last = now;
-	let mO=[...music].map((a,b)=>[musicave[b]+music[b],b]);
-	mO.sort((a,b)=>b[0]-a[0])
-	mO=mO.map((x)=>{
-		let now=music[x[1]];
-		let before=musicave[x[1]]
-		return [Math.max(0,(now-before+0.0001)/(now/2+before/2+0.0001))*256*2,x[1]]
+	let mO = [...music].map((a, b) => [musicave[b] + music[b], b]);
+	mO.sort((a, b) => b[0] - a[0])
+	mO = mO.map((x) => {
+		let now = music[x[1]];
+		let before = musicave[x[1]]
+		return [Math.max(0, (now - before + 0.0001) / (now / 2 + before / 2 + 0.0001)) * 256 * 2, x[1]]
 	});
-	mO.sort((a,b)=>b[0]-a[0])
-	const lmusic=mO.slice(0,32).sort((a,b)=>a[1]-b[1]).map(x=>[music[x[1]]-musicave[x[1]],x[1]]).concat(mO.slice(32).map(x=>[music[x[1]]-musicave[x[1]],x[1]]));
-	mus = lmusic.map(x=>x[0]/64).slice(0,16);
+	mO.sort((a, b) => b[0] - a[0])
+	const lmusic = mO.slice(0, 32).sort((a, b) => a[1] - b[1]).map(x => [music[x[1]] - musicave[x[1]], x[1]]).concat(mO.slice(32).map(x => [music[x[1]] - musicave[x[1]], x[1]]));
+	mus = lmusic.map(x => x[0] / 64).slice(0, 16);
 	// positionUniforms["time"].value = now;
 	// positionUniforms["delta"].value = delta;
 	// velocityUniforms["time"].value = now;
