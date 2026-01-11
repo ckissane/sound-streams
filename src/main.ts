@@ -37,7 +37,7 @@ var BoidBeat = function () {
   this.lineWidth = 1;
   this.song = window.location.hash.slice(1)
     ? "/#" + window.location.hash.slice(1)
-    : "/#300%20Violin%20Orchestra";
+    : "/#Push%20It%20to%20the%20Limit";
   this.activateMic = startMicD;
   this.tThreshold = 0.3;
   this.calibrate = () => (calibrationCountdown = 1000);
@@ -158,21 +158,21 @@ window.onload = function () {
   var gui = new GUI();
   gui
     .add(controls, "song", {
-      "Glorious Morning": "/#Glorious_morning",
-      Jumper: "/#Jumper",
-      Stride: "/#Stride-",
-      "300 Violin Orchestra": "/#300%20Violin%20Orchestra",
-      "ThunderZone v2": "/#638150_-ThunderZone-v2-",
-      "Portugal The Man - Feel it Still":
-        "/#Portugal.%20The%20Man%20-%20Feel%20It%20Still",
-      "The XX - Intro": "/#00%20Intro",
-      "Hall of the Mountain King": "/#Hall%20of%20the%20Mountain%20King",
-      'Everybody Wants To Rule The World (7" Version)':
-        "/#Everybody%20Wants%20To%20Rule%20The%20World%20(7%20Version)",
-      Flight: "/#Flight",
-      "Electroman Adventures V2":
-        "/#Waterflame%20-%20Electroman%20Adventures%20V2",
-      Rasputin: "/#Rasputin",
+      // "Glorious Morning": "/#Glorious_morning",
+      // Jumper: "/#Jumper",
+      // Stride: "/#Stride-",
+      // "300 Violin Orchestra": "/#300%20Violin%20Orchestra",
+      // "ThunderZone v2": "/#638150_-ThunderZone-v2-",
+      // "Portugal The Man - Feel it Still":
+      //   "/#Portugal.%20The%20Man%20-%20Feel%20It%20Still",
+      // "The XX - Intro": "/#00%20Intro",
+      // "Hall of the Mountain King": "/#Hall%20of%20the%20Mountain%20King",
+      // 'Everybody Wants To Rule The World (7" Version)':
+      //   "/#Everybody%20Wants%20To%20Rule%20The%20World%20(7%20Version)",
+      // Flight: "/#Flight",
+      // "Electroman Adventures V2":
+      //   "/#Waterflame%20-%20Electroman%20Adventures%20V2",
+      // Rasputin: "/#Rasputin",
       "Push It to the Limit": "Push%20It%20to%20the%20Limit",
       Microphone: "/#Microphone",
       ...Object.fromEntries(Object.keys(publicSongs).map((x) => [x, x])),
