@@ -136,6 +136,11 @@ function songchange(value) {
 }
 function hashchange() {
   let name = window.location.hash.slice(1);
+  if (name === "Microphone" || decodeURIComponent(name) === "Microphone") {
+    startMicD();
+    return;
+  }
+  micc = false;
   if (publicSongs[decodeURIComponent(name)]) {
     audio.src = publicSongs[decodeURIComponent(name)];
   } else if (name === "Push%20It%20to%20the%20Limit") {
@@ -169,6 +174,7 @@ window.onload = function () {
         "/#Waterflame%20-%20Electroman%20Adventures%20V2",
       Rasputin: "/#Rasputin",
       "Push It to the Limit": "Push%20It%20to%20the%20Limit",
+      Microphone: "/#Microphone",
       ...Object.fromEntries(Object.keys(publicSongs).map((x) => [x, x])),
     })
     .onChange(songchange);
