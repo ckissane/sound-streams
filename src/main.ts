@@ -1,5 +1,4 @@
 import Stats from "stats-js";
-import { GUI } from "dat.gui";
 import { initSPH } from "./scripts";
 
 var container, stats;
@@ -24,25 +23,8 @@ var positionUniforms;
 var velocityUniforms;
 var colorUniforms;
 var birdUniforms;
-var micc = false;
+var micc = true;
 var calibrationCountdown = 1000;
-let publicSongs = {
-  "Deeply Disturbed": "8. Deeply Disturbed.mp3",
-  "Rhinestone Eyes": "RhinestoneEyes.mp3",
-};
-var BoidBeat = function () {
-  this.speed = 1;
-  this.directions = 6;
-  this.turning = true;
-  this.lineWidth = 1;
-  this.song = window.location.hash.slice(1)
-    ? "/#" + window.location.hash.slice(1)
-    : "/#Push%20It%20to%20the%20Limit";
-  this.activateMic = startMicD;
-  this.tThreshold = 0.3;
-  this.calibrate = () => (calibrationCountdown = 1000);
-  // Define render logic ...
-};
 var freqCount = 32;
 function getRMS(spectrum) {
   var rms = 0;
@@ -73,21 +55,26 @@ function Microphone(_fft) {
   };
 
   async function init() {
+    var micMessage = document.getElementById("mic-message");
     try {
       context = new AudioContext();
       await startMic(context);
+      if (micMessage) {
+        micMessage.classList.add("granted");
+      }
     } catch (e) {
       console.error(e);
-      if (e.name === "NotAllowedError") {
-        alert(
-          "Microphone access was denied. Please allow microphone access and try again.",
-        );
-      } else if (e.name === "NotFoundError") {
-        alert(
-          "No microphone found. Please connect a microphone and try again.",
-        );
-      } else {
-        alert("Could not access microphone: " + e.message);
+      if (micMessage) {
+        micMessage.classList.add("denied");
+        if (e.name === "NotAllowedError") {
+          micMessage.textContent =
+            "Microphone access denied. Please refresh and allow access.";
+        } else if (e.name === "NotFoundError") {
+          micMessage.textContent =
+            "No microphone found. Please connect a microphone and refresh.";
+        } else {
+          micMessage.textContent = "Could not access microphone: " + e.message;
+        }
       }
     }
   }
@@ -130,63 +117,6 @@ function Microphone(_fft) {
   return this;
 }
 window.Microphone = Microphone;
-var audio = document.querySelector("audio");
-function songchange(value) {
-  window.location.hash = value.split("#").pop();
-}
-function hashchange() {
-  let name = window.location.hash.slice(1);
-  if (name === "Microphone" || decodeURIComponent(name) === "Microphone") {
-    startMicD();
-    return;
-  }
-  micc = false;
-  if (publicSongs[decodeURIComponent(name)]) {
-    audio.src = publicSongs[decodeURIComponent(name)];
-  } else if (name === "Push%20It%20to%20the%20Limit") {
-    audio.src = "./01 Paul Engemann - Scarface (Push It to the Limit).mp3";
-  } else {
-    audio.src =
-      "https://cdn.glitch.com/7c659aa6-fe5f-4610-bdf3-3fd76117d9a5%2F" +
-      window.location.hash.slice(1) +
-      ".mp3";
-  }
-  audio.classList.add("paused");
-}
-var controls = new BoidBeat();
-window.onload = function () {
-  var gui = new GUI();
-  gui
-    .add(controls, "song", {
-      // "Glorious Morning": "/#Glorious_morning",
-      // Jumper: "/#Jumper",
-      // Stride: "/#Stride-",
-      // "300 Violin Orchestra": "/#300%20Violin%20Orchestra",
-      // "ThunderZone v2": "/#638150_-ThunderZone-v2-",
-      // "Portugal The Man - Feel it Still":
-      //   "/#Portugal.%20The%20Man%20-%20Feel%20It%20Still",
-      // "The XX - Intro": "/#00%20Intro",
-      // "Hall of the Mountain King": "/#Hall%20of%20the%20Mountain%20King",
-      // 'Everybody Wants To Rule The World (7" Version)':
-      //   "/#Everybody%20Wants%20To%20Rule%20The%20World%20(7%20Version)",
-      // Flight: "/#Flight",
-      // "Electroman Adventures V2":
-      //   "/#Waterflame%20-%20Electroman%20Adventures%20V2",
-      // Rasputin: "/#Rasputin",
-      "Push It to the Limit": "Push%20It%20to%20the%20Limit",
-      Microphone: "/#Microphone",
-      ...Object.fromEntries(Object.keys(publicSongs).map((x) => [x, x])),
-    })
-    .onChange(songchange);
-  // gui.add(controls, 'speed', 0.125, 2);
-  // gui.add(controls, 'lineWidth', 1, 10);
-  // gui.add(controls, 'tThreshold', 0.01, 0.99);
-
-  // gui.add(controls, 'directions', 2, 12);
-  // gui.add(controls, 'turning');
-  gui.add(controls, "activateMic").name("useMicrophone");
-  // gui.add(controls, 'calibrate');
-};
 
 var effectiveF = 16;
 var trailSteps = 20;
@@ -200,17 +130,7 @@ function logNt(v) {
   );
 }
 
-if (window.location.hash) hashchange();
-window.addEventListener("hashchange", hashchange);
 var Mic;
-var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-var analyser = audioCtx.createAnalyser();
-analyser.connect(audioCtx.destination);
-
-analyser.fftSize = freqCount * 2;
-analyser.smoothingTimeConstant = 0.2;
-const source = audioCtx.createMediaElementSource(audio);
-source.connect(analyser);
 var bpm = 240;
 
 var hM = 100;
@@ -232,12 +152,8 @@ let music = new Uint8Array(freqCount).fill(0);
 function main() {
   calibrationCountdown -= 1000 / 60;
   ll++;
-  if (micc) {
-    if (Mic && Mic.spectrum && Mic.spectrum.length >= freqCount) {
-      music = new Uint8Array(Mic.spectrum.slice(0, freqCount));
-    }
-  } else {
-    analyser.getByteFrequencyData(music);
+  if (Mic && Mic.spectrum && Mic.spectrum.length >= freqCount) {
+    music = new Uint8Array(Mic.spectrum.slice(0, freqCount));
   }
   for (var i = 0; i < 0; i++) {
     music = music.map((x, i) => {
@@ -269,15 +185,7 @@ function main() {
   }
 }
 
-audio.addEventListener("pause", () => {
-  audio.classList.add("paused");
-});
-audio.addEventListener("play", () => {
-  audioCtx.resume();
-  audio.classList.remove("paused");
-});
 function startMicD() {
-  micc = true;
   if (!Mic) {
     Mic = new Microphone(freqCount * 2);
     Mic.init();
@@ -285,6 +193,7 @@ function startMicD() {
 }
 let mus = [0];
 const getMus = () => mus;
+startMicD();
 init();
 animate();
 
